@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>博文列表</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link href="{P}/css/app.css" rel="stylesheet" media="screen">
+  <script src="{P}/js/vendor/modernizr.custom.js"></script>
+  <script src="{P}/js/vendor/detectizr.min.js"></script>
+</head>
+
+<!-- Body -->
+
+<body>
+  <!-- Page Wrapper -->
+  <div class="page-wrapper">
+    <!-- Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <button type="button" class="close-btn" data-dismiss="modal" aria-label="关闭"><span
+            aria-hidden="true">&times;</span></button>
+        <div class="modal-content text-center">
+          <h4>登录</h4>
+          <form method="post" action="index.php?c=user&a=check">
+            <input type="username" class="form-control" placeholder="请您填写用户名" name="u_username" required>
+            <input type="password" class="form-control" placeholder="请您填写密码" name="u_password" required>
+            <div class="form-group">
+              <button type="submit" class="btn login-btn btn-default waves-effect waves-light">立刻登录<i
+                  class="icon-head"></i></button>
+            </div>
+            <div class="text-left">
+              <span class="text-sm text-semibold">新用户? <a href="#" data-toggle="modal"
+                  data-target="#registerModal">立即注册</a></span>
+            </div>
+          </form><!-- <form> -->
+        </div><!-- .modal-content -->
+      </div><!-- .modal-dialog -->
+    </div><!-- .modal.fade -->
+
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <button type="button" class="close-btn" data-dismiss="modal" aria-label="关闭"><span
+            aria-hidden="true">&times;</span></button>
+        <div class="modal-content text-center">
+          <h4>注册</h4>
+          <form method="post" action="index.php?c=user&a=register">
+            <input name="username" type="text" class="form-control" placeholder="请您填写用户名" required>
+            <input name="password" type="password" class="form-control" placeholder="请您填写密码" required>
+            <div class="form-group">
+              <img src="index.php?c=user&a=captcha" width="300px" heigth="60px"
+                onclick="this.src='index.php?c=user&a=captcha&'+Math.random()">
+            </div>
+            <input name=" captcha" type="text" class="form-control" placeholder="请您填写验证码" required>
+            <div class="form-group">
+              <button type="submit" class="btn login-btn btn-default waves-effect waves-light">立刻注册<i
+                  class="icon-head"></i></button>
+            </div>
+            <div class="text-left">
+              <span class="text-sm text-semibold">已注册? <a href="#" data-toggle="modal"
+                  data-target="#loginModal">立即登录</a></span>
+            </div>
+          </form><!-- <form> -->
+        </div><!-- .modal-content -->
+      </div><!-- .modal-dialog -->
+    </div><!-- .modal.fade -->
+
+    <!-- Navbar -->
+    <!-- Add class ".navbar-sticky" to make navbar stuck when it hits the top of the page. Another modifier class is: "navbar-fullwidth" to stretch navbar and make it occupy 100% of the page width. The screen width at which navbar collapses can be controlled through the variable "$nav-collapse" in sass/variables.scss -->
+    <header class="navbar">
+
+      <!-- Toolbar -->
+      <div class="topbar">
+        <div class="container">
+          <a href="index.php" class="site-logo">
+            博文前台
+          </a><!-- .site-logo -->
+
+          <!-- Mobile Menu Toggle -->
+          <div class="nav-toggle"><span></span></div>
+
+          <div class="toolbar">
+            {if isset($smarty.session.user)}
+            <a href="index.php?a=logout&c=user" class="text-sm">退出登录</a>
+            <a href="index.php?p=admin"
+              class="btn btn-sm btn-default btn-icon-right waves-effect waves-light">{$smarty.session.user.u_username}
+              <i class="icon-head"></i></a>
+            {else}
+            <a href="#" class="btn btn-sm btn-default btn-icon-right waves-effect waves-light" data-toggle="modal"
+              data-target="#loginModal">立刻登录 <i class="icon-head"></i></a>
+            {/if}
+          </div><!-- .toolbar -->
+        </div><!-- .container -->
+      </div><!-- .topbar -->
+    </header><!-- .navbar -->
+
+    <!-- Page Title -->
+    <!--Add modifier class : "pt-fullwidth" to stretch page title and make it occupy 100% of the page width. -->
+    <section class="page-title">
+      <div class="container">
+        <div class="inner">
+          <div class="column">
+            <div class="title">
+              <h1>博文内容列表</h1>
+            </div><!-- .title -->
+          </div><!-- .column -->
+          <div class="column">
+          </div><!-- .column -->
+        </div>
+      </div>
+    </section><!-- .page-title -->
+
+    <!-- Container -->
+    <div class="container">
+      <div class="row">
+
+        <!-- Content -->
+        <div class="col-lg-9 col-md-8">
+          <!-- Post -->
+          {foreach $article as $art}
+          <article class="post-item">
+            <a href="index.php?a=detail&id={$art.id}" class="post-thumb waves-effect">
+              <img src="{if $art.a_img}{URL}uploads/{$art.a_img}{else}{P}/img/blog/post01.jpg{/if}">
+            </a><!-- .post-thumb -->
+            <div class="post-body">
+              <div class="post-meta">
+                <div class="column">
+                  <span>
+                    <i class="icon-head"></i>
+                    <a href="#">{$art.a_author}</a>
+                  </span>
+                  <span>在</span>
+                  <span>
+                    <i class="icon-ribbon"></i>
+                    <a href="#">{$smarty.session.categories[$art.c_id].c_name}</a>
+                  </span>
+                  <span>下发布</span>
+                  <span class="post-comments">
+                    <i class="icon-speech-bubble"></i>
+                    <a href="#">{$art.c_count|default:0}</a>
+                  </span>
+                </div>
+                <div class="column"><span>{date('Y-m-d',$art.a_time)}</span></div>
+              </div><!-- .post-meta -->
+              <h3 class="post-title"> {$art.a_title}</h3>
+              <p>{$art.a_content}</p>
+              <a href="index.php?a=detail&id={$art.id}">点击阅读更多</a>
+            </div><!-- .post-body -->
+          </article><!-- .post-item -->
+          {/foreach}
+
+
+
+          <!-- Pagination -->
+          <ul class="pagination">
+            {$pagestr}
+          </ul>
+        </div><!-- .col-lg-9.col-md-8 -->
+
+        <!-- Sidebar -->
+        <div class="col-lg-3 col-md-4">
+          <div class="space-top-2x visible-sm visible-xs"></div>
+          <aside class="sidebar">
+            <section class="widget widget_search">
+              <form method="POST" class="search-box">
+                <input type="text" class="form-control" name='a_title' placeholder="{$cond['a_title']|default:''}">
+                <button type="submit"><i class="icon-search"></i></button>
+              </form>
+            </section>
+            <section class="widget widget_categories">
+              <h3 class="widget-title">
+                <i class="icon-ribbon"></i>
+                分类
+              </h3>
+              <ul>
+                {foreach $smarty.session.categories as $cat}
+                <li><a
+                    href="index.php?c_id={$cat.id}">{str_repeat('----',$cat.level)}{$cat.c_name}<span>{$cat_counts[$cat.id]|default:0}</span></a>
+                </li>
+                {/foreach}
+              </ul>
+            </section><!-- .widget.widget_categories -->
+            <section class="widget widget_recent_posts">
+              <h3 class="widget-title">
+                <i class="icon-paper"></i>
+                最新博文
+              </h3>
+              {foreach $news as $new}
+              <div class="item">
+                <div class="thumb">
+                  <a href="index.php?a=detail&id={$new.id}">
+                    <img
+                      src="{if $new.a_img_thumb}{URL}uploads/{$new.a_img_thumb}{else}{P}/img/blog/sidebar/post01.jpg{/if}"
+                      alt="Post01"></a>
+                </div>
+                <div class="info">
+                  <h4><a href="index.php?a=detail&id={$new.id}">{$new.a_title}</a></h4>
+                </div>
+              </div><!-- .item -->
+              {/foreach}
+            </section><!-- .widget.widget_recent_posts -->
+          </aside><!-- .sidebar -->
+        </div><!-- .col-lg-3.col-md-4 -->
+      </div><!-- .row -->
+    </div><!-- .container -->
+
+    <!-- Scroll To Top Button -->
+    <a href="#" class="scroll-to-top-btn">
+      <i class="icon-arrow-up"></i>
+    </a><!-- .scroll-to-top-btn -->
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="bottom-footer">
+        <div class="container">
+          <div class="copyright">
+            <div class="column">
+              <p>&copy; 2016. 保留所有权利。</p>
+            </div><!-- .column -->
+            <div class="column">
+            </div><!-- .column -->
+          </div><!-- .copyright -->
+        </div><!-- .container -->
+      </div><!-- .bottom-footer -->
+    </footer><!-- .footer -->
+
+  </div><!-- .page-wrapper -->
+
+  <!-- JavaScript (jQuery) libraries, plugins and custom scripts -->
+  <script src="{P}/js/vendor/jquery-2.1.4.min.js"></script>
+  <script src="{P}/js/vendor/bootstrap.min.js"></script>
+  <script src="{P}/js/vendor/waves.min.js"></script>
+  <script src="{P}/js/vendor/placeholder.js"></script>
+  <script src="{P}/js/vendor/waypoints.min.js"></script>
+  <script src="{P}/js/vendor/velocity.min.js"></script>
+  <script src="{P}/js/scripts.js"></script>
+
+</body><!-- <body> -->
+
+</html>

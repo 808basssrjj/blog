@@ -1,0 +1,91 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>博客后台</title>
+    <link rel="stylesheet" type="text/css" href="{P}/css/app.css" />
+    <script type="text/javascript" src="{P}/js/app.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <!-- START HEADER -->
+        {include file='../Public/header.html'}
+        <!-- END HEADER -->
+
+        <!-- START MAIN -->
+        <div id="main">
+            <!-- START SIDEBAR -->
+            {include file='../Public/sidebar.html'}
+            <!-- END SIDEBAR -->
+
+            <!-- START PAGE -->
+            <div id="page">
+                <!-- start page title -->
+                <div class="page-title">
+                    <div class="in">
+                        <div class="titlebar">
+                            <h2>分类管理</h2>
+                            <p>分类列表</p>
+                        </div>
+
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+                <!-- START CONTENT -->
+                <div class="content">
+                    <!-- START TABLE -->
+                    <div class="simplebox grid740">
+
+                        <div class="titleh">
+                            <h3>分类列表</h3>
+                        </div>
+
+                        <table id="myTable" class="tablesorter">
+                            <thead>
+                                <tr>
+                                    <th>#ID</th>
+                                    <th>名称</th>
+                                    <th>下属博文数量</th>
+                                    <th>排序</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {foreach $smarty.session.categories as $cat}
+                                <tr>
+                                    <td>{$cat.id}</td>
+                                    <td>{str_repeat('----',$cat.level)}{$cat.c_name}</td>
+                                    <td>{$c_count[$cat.id]|default:0}</td>
+                                    <td>{$cat.c_sort}</td>
+                                    <td>
+                                        <a href="index.php?p=admin&c=category&a=edit&id={$cat.id}">编辑</a>
+                                        <a href="index.php?p=admin&c=category&a=delete&id={$cat.id}"
+                                            onClick="return confirm('确认删除：{$cat.c_name} 分类？')">删除</a>
+                                    </td>
+                                </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- END TABLE -->
+                </div>
+                <!-- END CONTENT -->
+            </div>
+            <!-- END PAGE -->
+            <div class="clear"></div>
+        </div>
+        <!-- END MAIN -->
+
+        <!-- START FOOTER -->
+        {include file='../Public/foot.html'}
+        <!-- END FOOTER -->
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>博客后台</title>
+    <link rel="stylesheet" type="text/css" href="{P}/css/app.css" />
+    <script type="text/javascript" src="{P}/js/app.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- START HEADER -->
+
+        {include file='../Public/header.html'}
+        <!-- END HEADER -->
+
+        <!-- START MAIN -->
+        <div id="main">
+            <!-- START SIDEBAR -->
+
+            {include file='../Public/sidebar.html'}
+            <!-- END SIDEBAR -->
+
+            <!-- START PAGE -->
+            <div id="page">
+                <!-- start page title -->
+                <div class="page-title">
+                    <div class="in">
+                        <div class="titlebar">
+                            <h2>控制面板</h2>
+                            <p>小标题</p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <!-- end page title -->
+                <!-- START CONTENT -->
+                <div class="content">
+                    <!-- start simple tips -->
+                    <div class="simple-tips">
+                        <h2>提示</h2>
+                        <ul>
+                            <li>1. 使用左侧的导航菜单进入功能</li>
+                            <li>2. 使用右上角的退出按钮退出管理后台</li>
+                        </ul>
+                        <a href="#" class="close tips" title="关闭">关闭</a>
+                    </div>
+                    <div class="simple-tips">
+                        <h2>提示</h2>
+                        <ul>
+                            <li>1. 您当前使用的ip: {$smarty.server.REMOTE_ADDR}</li>
+                            <li>2. PHP版本: {PHP_VERSION}</li>
+                            <li>3. 浏览器: {$smarty.server.HTTP_USER_AGENT}</li>
+                        </ul>
+                        <a href="#" class="close tips" title="关闭">关闭</a>
+                    </div>
+
+                    <!-- start dashbutton -->
+                    <div class="grid740">
+                        <span class="dashbutton"> <img src="{P}/img/icons/dashbutton/users.png" width="44" height="32"
+                                alt="icon" /> <b>用户数</b> {$counts}</span>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="clear"></div>
+                </div>
+                <!-- END CONTENT -->
+            </div>
+            <!-- END PAGE -->
+            <div class="clear"></div>
+        </div>
+        <!-- END MAIN -->
+
+        <!-- START FOOTER -->
+        {include file='../Public/foot.html'}
+        <!-- END FOOTER -->
+    </div>
+</body>
+
+</html>

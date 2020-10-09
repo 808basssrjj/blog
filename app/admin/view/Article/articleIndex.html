@@ -1,0 +1,173 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>博客后台</title>
+    <link rel="stylesheet" type="text/css" href="{P}/css/app.css" />
+    <script type="text/javascript" src="{P}/js/app.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- START HEADER -->
+
+        {include file='../Public/header.html'}
+        <!-- END HEADER -->
+
+        <!-- START MAIN -->
+        <div id="main">
+            <!-- START SIDEBAR -->
+            {include file="../Public/sidebar.html"}
+            <!-- END SIDEBAR -->
+
+            <!-- START PAGE -->
+            <div id="page">
+                <!-- start page title -->
+                <div class="page-title">
+                    <div class="in">
+                        <div class="titlebar">
+                            <h2>博文管理</h2>
+                            <p>博文列表</p>
+                        </div>
+
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+                <!-- START CONTENT -->
+                <div class="content">
+                    <div class="simplebox grid740" style="z-index: 720;">
+                        <div class="titleh" style="z-index: 710;">
+                            <h3>搜索</h3>
+                        </div>
+                        <div class="body" style="z-index: 690;">
+
+                            <form id="form2" name="form2" method="post" action="index.php?p=admin&c=article">
+                                <div class="st-form-line" style="z-index: 680;">
+                                    <span class="st-labeltext">标题</span>
+                                    <input name="a_title" type="text" class="st-forminput" style="width:510px"
+                                        value="{if isset($cond['a_title'])}{$cond['a_title']}{/if}">
+                                    <div class="clear" style="z-index: 670;"></div>
+                                </div>
+                                <div class="st-form-line" style="z-index: 640;">
+                                    <span class="st-labeltext">分类</span>
+                                    <select class="uniform" name="c_id">
+                                        <option value="0">任意</option>
+                                        {foreach $smarty.session.categories as $cat}
+                                        <option value="{$cat.id}" {if isset($cond['c_id']) && $cond['c_id'] eq
+                                            $cat.id}selected="selected" {/if}>
+                                            {str_repeat('----',$cat.level)}{$cat.c_name}</option>
+                                        {/foreach}
+                                    </select>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="st-form-line">
+                                    <span class="st-labeltext">状态</span>
+                                    <select class="uniform" name="a_status">
+                                        <option value="">任意</option>
+                                        <option value="1" {if isset($cond['a_status']) && $cond['a_status'] eq
+                                            1}selected="selected" {/if}>草稿</option>
+                                        <option value="2" {if isset($cond['a_status']) && $cond['a_status'] eq
+                                            2}selected="selected" {/if}>公开</option>
+                                        <option value="3" {if isset($cond['a_status']) && $cond['a_status'] eq
+                                            3}selected="selected" {/if}>隐藏</option>
+                                    </select>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="st-form-line" style="z-index: 620;">
+                                    <span class="st-labeltext">置顶</span>
+                                    <label class="margin-right10">
+                                        <div class="radio">
+                                            <span><input type="radio" name="a_toped" class="uniform" value=""
+                                                    checked></span>
+                                        </div> 不限
+                                    </label>
+                                    <label class="margin-right10">
+                                        <div class="radio">
+                                            <span><input type="radio" name="a_toped" class="uniform" value="1" {if
+                                                    isset($cond['a_toped']) && $cond['a_toped'] eq 1}checked="checked"
+                                                    {/if}></span>
+                                        </div> 置顶
+                                    </label>
+                                    <label class="margin-right10">
+                                        <div class="radio">
+                                            <span><input type="radio" name="a_toped" class="uniform" value="2" {if
+                                                    isset($cond['a_toped']) && $cond['a_toped'] eq 2}checked="checked"
+                                                    {/if}></span>
+                                        </div> 不置顶
+                                    </label>
+
+                                    <div class="clear" style="z-index: 610;"></div>
+                                </div>
+                                <div class="button-box" style="z-index: 460;">
+                                    <input type="submit" id="button" value="提交" class="st-button">
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                    <!-- START TABLE -->
+                    <div class="simplebox grid740">
+
+                        <div class="titleh">
+                            <h3>博文列表</h3>
+                        </div>
+
+                        <table id="myTable" class="tablesorter">
+                            <thead>
+                                <tr>
+                                    <th>#ID</th>
+                                    <th>作者</th>
+                                    <th>分类</th>
+                                    <th>标题</th>
+                                    <th>发布日期</th>
+                                    <th>评论数量</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {foreach $articles as $art}
+                                <tr>
+                                    <td>{$art.id}</td>
+                                    <td>{$art.a_author}</td>
+                                    <td>{$smarty.session.categories[$art.c_id].c_name}</td>
+                                    <td>{$art.a_title}</td>
+                                    <td>{date('Y-m-d H:i:s',$art.a_time)}</td>
+                                    <td>12</td>
+                                    <td>{if $art.a_status eq 1}草稿{elseif $art.a_status eq 2}公开{else}隐藏{/if}</td>
+                                    <td>
+                                        <a href="index.php?p=admin&c=article&a=delete&id={$art.id}"
+                                            onclick="return confirm('确认删除文章：{$art.a_title}？');">删除</a>
+                                        {if $art.u_id eq $smarty.session.user.id}
+                                        <a href="index.php?p=admin&c=article&a=edit&id={$art.id}">编辑</a>
+                                        {/if}
+                                    </td>
+                                </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                        <ul class="pagination">
+                            {$pagestr}
+                        </ul>
+                    </div>
+                    <!-- END TABLE -->
+                </div>
+                <!-- END CONTENT -->
+            </div>
+            <!-- END PAGE -->
+            <div class="clear"></div>
+        </div>
+        <!-- END MAIN -->
+
+        <!-- START FOOTER -->
+        {include file="../Public/foot.html"}
+        <!-- END FOOTER -->
+    </div>
+</body>
+
+</html>
